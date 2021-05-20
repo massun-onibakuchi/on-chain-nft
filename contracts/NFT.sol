@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity =0.7.6;
+pragma solidity ^0.7.6;
 
 import '@openzeppelin/contracts/token/ERC721/ERC721Burnable.sol';
 import '@openzeppelin/contracts/utils/Counters.sol';

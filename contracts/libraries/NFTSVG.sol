@@ -1,11 +1,12 @@
 // SPDX-License-Identifier: MIT
-pragma solidity =0.7.6;
+pragma solidity ^0.7.6;
+pragma abicoder v2;
 
-import '@openzeppelin/contracts/utils/Strings.sol';
-import '@openzeppelin/contracts/math/SafeMath.sol';
-import '@openzeppelin/contracts/math/SignedSafeMath.sol';
-import 'base64-sol/base64.sol';
-import './HexString.sol';
+import "@openzeppelin/contracts/utils/Strings.sol";
+import "@openzeppelin/contracts/math/SafeMath.sol";
+import "@openzeppelin/contracts/math/SignedSafeMath.sol";
+import "base64-sol/base64.sol";
+import "./HexString.sol";
 
 library NFTSVG {
     using Strings for uint256;
@@ -33,7 +34,7 @@ library NFTSVG {
                     generateSVGDefs(params),
                     generateSVGColor(params),
                     generateSVGRareMark(params.tokenId),
-                    '</svg>'
+                    "</svg>"
                 )
             );
     }
@@ -43,7 +44,7 @@ library NFTSVG {
             abi.encodePacked(
                 '<svg width="290" height="500" viewBox="0 0 290 500" xmlns="http://www.w3.org/2000/svg"',
                 " xmlns:xlink='http://www.w3.org/1999/xlink'>",
-                '<defs>',
+                "<defs>",
                 Base64.encode(
                     bytes(
                         abi.encodePacked(
@@ -53,7 +54,7 @@ library NFTSVG {
                         )
                     )
                 ),
-                '</defs>'
+                "</defs>"
             )
         );
     }
@@ -64,7 +65,7 @@ library NFTSVG {
                 '<g mask="url(#fade-symbol)"><rect fill="none" x="0px" y="0px" width="290px" height="200px" /> <text y="70px" x="32px" fill="white" font-family="\'Courier New\', monospace" font-weight="200" font-size="36px">',
                 params.uTokenSymbol,
                 '</text><text y="115px" x="32px" fill="white" font-family="\'Courier New\', monospace" font-weight="200" font-size="36px">',
-                '</text></g>',
+                "</text></g>",
                 '<rect x="16" y="16" width="258" height="468" rx="26" ry="26" fill="rgba(0,0,0,0)" stroke="rgba(255,255,255,0.2)" />'
             )
         );
@@ -78,7 +79,7 @@ library NFTSVG {
                 )
             );
         } else {
-            svg = '';
+            svg = "";
         }
     }
 
