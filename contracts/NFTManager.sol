@@ -46,8 +46,10 @@ contract NFTManager is NFT, INFTManager, ReentrancyGuard {
             );
     }
 
-    function burn(uint256 tokenId) public virtual override(ERC721Burnable, INFTManager) nonReentrant() {
-        super.burn(tokenId);
+    function burn(uint256 tokenId) public virtual override(INFTManager, NFT) nonReentrant() {
+        //solhint-disable-next-line max-line-length
+        require(_isApprovedOrOwner(_msgSender(), tokenId), 'ERC721Burnable: caller is not owner nor approved');
+        _burn(tokenId);
         uToken.safeTransfer(msg.sender, STAKE_AMOUNT);
     }
 }

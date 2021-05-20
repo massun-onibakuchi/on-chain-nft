@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.7.6;
 
-import '@openzeppelin/contracts/token/ERC721/ERC721Burnable.sol';
+import '@openzeppelin/contracts/token/ERC721/ERC721.sol';
 import '@openzeppelin/contracts/utils/Counters.sol';
 import '@openzeppelin/contracts/math/SafeMath.sol';
 
 import './libraries/NFTDescriptor.sol';
 
-abstract contract NFT is ERC721Burnable {
+abstract contract NFT is ERC721 {
     using SafeMath for uint256;
     using Counters for Counters.Counter;
 
@@ -28,6 +28,8 @@ abstract contract NFT is ERC721Burnable {
     }
 
     function mint() public virtual;
+
+    function burn(uint256 tokenId) public virtual;
 
     function _tokenURI(uint256 tokenId) internal view virtual returns (string memory);
 }
