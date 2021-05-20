@@ -45,23 +45,25 @@ interface INFT is IERC721 {
     function mint(address to) external;
 }
 
-contract Manager {
+contract Manager is NFT {
     using SafeERC20 for IERC20;
     uint256 public constant MIN_STAKE_AMOUNT = 1e18;
-    INFT public immutable nft;
     IERC20 public immutable stETH;
 
     mapping(address => uint256) public balances;
 
-    constructor(INFT _nft, IERC20 _stETH) {
-        nft = _nft;
+    constructor(
+        string memory _name,
+        string memory _symbol,
+        IERC20 _stETH
+    ) {
         stETH = _stETH;
     }
 
     function mint() public virtual {
         stETH.safeTransferFrom(msg.sender, address(this), MIN_STAKE_AMOUNT);
-        nft.mint(msg.sender);
+        mint(msg.sender);
     }
 
-    function burn(uint256 tokenId) public virtual {}
+    function burn(uint256 tokenId) public virtual override {}
 }

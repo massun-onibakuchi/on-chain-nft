@@ -3,7 +3,8 @@
     "bracketSpacing": true,
     "endOfLine": "auto",
     "printWidth": 120,
-    "singleQuote": false,
+    "semi": false,
+    "singleQuote": true,
     "tabWidth": 4,
     "trailingComma": "all",
     "overrides": [
