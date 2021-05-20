@@ -18,6 +18,7 @@ contract NFTManager is NFT, INFTManager, ReentrancyGuard {
 
     uint256 public constant STAKE_AMOUNT = 1e18;
 
+    ///@dev ref to underlying token 
     IERC20 public immutable uToken;
 
     constructor(
