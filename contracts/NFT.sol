@@ -5,8 +5,6 @@ import '@openzeppelin/contracts/token/ERC721/ERC721.sol';
 import '@openzeppelin/contracts/utils/Counters.sol';
 import '@openzeppelin/contracts/math/SafeMath.sol';
 
-import './libraries/NFTDescriptor.sol';
-
 abstract contract NFT is ERC721 {
     using SafeMath for uint256;
     using Counters for Counters.Counter;

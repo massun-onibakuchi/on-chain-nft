@@ -18,7 +18,7 @@ contract NFTManager is NFT, INFTManager, ReentrancyGuard {
 
     uint256 public constant STAKE_AMOUNT = 1e18;
 
-    ///@dev ref to underlying token 
+    ///@dev ref to underlying token
     IERC20 public immutable uToken;
 
     constructor(
@@ -34,6 +34,13 @@ contract NFTManager is NFT, INFTManager, ReentrancyGuard {
         _safeMint(msg.sender, '');
     }
 
+    function burn(uint256 tokenId) public virtual override(INFTManager, NFT) nonReentrant() {
+        //solhint-disable-next-line max-line-length
+        require(_isApprovedOrOwner(_msgSender(), tokenId), 'ERC721Burnable: caller is not owner nor approved');
+        _burn(tokenId);
+        uToken.safeTransfer(msg.sender, STAKE_AMOUNT);
+    }
+
     function _tokenURI(uint256 tokenId) internal view virtual override returns (string memory) {
         return
             NFTDescriptor.constructTokenURI(
@@ -45,12 +52,5 @@ contract NFTManager is NFT, INFTManager, ReentrancyGuard {
                     uTokenAddress: address(uToken)
                 })
             );
-    }
-
-    function burn(uint256 tokenId) public virtual override(INFTManager, NFT) nonReentrant() {
-        //solhint-disable-next-line max-line-length
-        require(_isApprovedOrOwner(_msgSender(), tokenId), 'ERC721Burnable: caller is not owner nor approved');
-        _burn(tokenId);
-        uToken.safeTransfer(msg.sender, STAKE_AMOUNT);
     }
 }
