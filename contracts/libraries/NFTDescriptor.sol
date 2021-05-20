@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity =0.7.6;
+pragma abicoder v2;
 
 import '@openzeppelin/contracts/utils/Strings.sol';
 import '@openzeppelin/contracts/math/SafeMath.sol';
@@ -19,10 +20,13 @@ library NFTDescriptor {
     struct URIParams {
         uint256 tokenId;
         uint256 blockNumber;
+        uint256 stakeAmount;
+        address uTokenAddress;
+        string uTokenSymbol;
     }
 
     function constructTokenURI(URIParams memory params) public pure returns (string memory) {
-        string memory name = 'stETH-NFT';
+        string memory name = string(abi.encodePacked(params.uTokenSymbol, '-NFT'));
         string memory description = generateDescription();
         string memory image = Base64.encode(bytes(generateSVGImage(params)));
 
@@ -70,12 +74,20 @@ library NFTDescriptor {
         return symbol;
     }
 
+    function addressToString(address addr) internal pure returns (string memory) {
+        return (uint256(addr)).toHexString(20);
+    }
+
+    function tokenToColorHex(uint256 token, uint256 offset) internal pure returns (string memory str) {
+        return string((token >> offset).toHexStringNoPrefix(3));
+    }
+
     function generateDescription() private pure returns (string memory) {
         return
             string(
                 abi.encodePacked(
                     'This NFT represents a liquidity in stETH pool ',
-                    'The owner of this NFT can modify or redeem the position.\\n'
+                    'The owner of this NFT can remove the liquidity.\\n'
                 )
             );
     }
@@ -83,8 +95,13 @@ library NFTDescriptor {
     function generateSVGImage(URIParams memory params) internal pure returns (string memory svg) {
         NFTSVG.SVGParams memory svgParams =
             NFTSVG.SVGParams({
-                quoteToken: addressToString(params.quoteTokenAddress),
-                baseToken: addressToString(params.baseTokenAddress)
+                tokenId: params.tokenId,
+                blockNumber: params.blockNumber,
+                stakeAmount: params.stakeAmount,
+                uToken: addressToString(params.uTokenAddress),
+                uTokenSymbol: params.uTokenSymbol,
+                color0: tokenToColorHex(uint256(params.uTokenAddress), 136),
+                color1: tokenToColorHex(uint256(params.uTokenAddress), 0)
             });
 
         return NFTSVG.generateSVG(svgParams);

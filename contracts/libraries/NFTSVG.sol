@@ -11,8 +11,13 @@ library NFTSVG {
     using Strings for uint256;
 
     struct SVGParams {
-        string quoteToken;
-        string baseToken;
+        uint256 tokenId;
+        uint256 blockNumber;
+        uint256 stakeAmount;
+        string uToken;
+        string uTokenSymbol;
+        string color0;
+        string color1;
     }
 
     function generateSVG(SVGParams memory params) internal pure returns (string memory svg) {
@@ -26,7 +31,7 @@ library NFTSVG {
             string(
                 abi.encodePacked(
                     generateSVGDefs(params),
-                    generateSVGColor(params.quoteTokenSymbol, params.baseTokenSymbol, params.feeTier),
+                    generateSVGColor(params),
                     generateSVGRareMark(params.tokenId),
                     '</svg>'
                 )
@@ -57,9 +62,7 @@ library NFTSVG {
         svg = string(
             abi.encodePacked(
                 '<g mask="url(#fade-symbol)"><rect fill="none" x="0px" y="0px" width="290px" height="200px" /> <text y="70px" x="32px" fill="white" font-family="\'Courier New\', monospace" font-weight="200" font-size="36px">',
-                quoteTokenSymbol,
-                '/',
-                baseTokenSymbol,
+                params.uTokenSymbol,
                 '</text><text y="115px" x="32px" fill="white" font-family="\'Courier New\', monospace" font-weight="200" font-size="36px">',
                 '</text></g>',
                 '<rect x="16" y="16" width="258" height="468" rx="26" ry="26" fill="rgba(0,0,0,0)" stroke="rgba(255,255,255,0.2)" />'
