@@ -73,40 +73,9 @@ describe('NFTDescriptor', async function () {
         console.log('json.image :>> ', json.image)
 
         const base64Str = json.image.replace('data:image/svg+xml;base64,', '')
-        await fs.promises.writeFile('figures/nft-descriptor.svg', base64Str, { encoding: 'base64' })
+        await fs.promises.writeFile('images/nft-descriptor.svg', base64Str, { encoding: 'base64' })
 
         expect(json.description).to.equal(expectedTokenUri.description)
         expect(json.name).to.equal(expectedTokenUri.name)
     })
-
-    // it('balanceOfToken', async function () {
-    //     // check
-    //     expect(await badger.balanceOf(wallet.address)).to.eq(amount)
-    //     // supply
-    //     await badger.connect(wallet).approve(yieldSource.address, amount)
-    //     await yieldSource.supplyTokenTo(amount, wallet.address)
-
-    //     const bBadgerBalance = await yieldSource.balanceOf(wallet.address)
-    //     expect(await sett.balanceOf(yieldSource.address)).eq(bBadgerBalance)
-    // })
-
-    // it('supplyTokenTo', async function () {
-    //     expect(await badger.balanceOf(sett.address)).to.eq(0)
-    //     expect(await badger.balanceOf(wallet.address)).to.eq(amount)
-
-    //     await badger.connect(wallet).approve(yieldSource.address, amount)
-    //     await yieldSource.supplyTokenTo(amount, wallet.address)
-
-    //     expect(await badger.balanceOf(sett.address)).to.eq(amount)
-    //     expect(await yieldSource.balanceOfToken(wallet.address)).to.eq(amount)
-    // })
-
-    // it('redeemToken', async function () {
-    //     await badger.connect(wallet).approve(yieldSource.address, amount)
-    //     await yieldSource.supplyTokenTo(amount, wallet.address)
-
-    //     expect(await badger.balanceOf(wallet.address)).to.eq(toWei('0'))
-    //     await yieldSource.redeemToken(amount)
-    //     expect(await badger.balanceOf(wallet.address)).to.eq(amount)
-    // })
 })
