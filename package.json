@@ -42,9 +42,9 @@
         "console": "hardhat console",
         "verify": "yarn hint && yarn test",
         "test": "yarn hardhat test --network hardhat",
-        "lint": "yarn solhint 'contracts/**/*.sol' && yarn prettier -c './**/*.js'",
-        "format": "yarn prettier --write contracts/*.sol && yarn prettier --write test/*.js",
+        "lint": "yarn solhint 'contracts/**/*.sol' && yarn prettier -c './**/*.ts'",
+        "format": "yarn prettier --write contracts/*.sol && yarn prettier --write test/*.ts && yarn prettier --write test/*.js",
         "hint": "solhint \"contracts/**/*.sol\"",
-        "coverage": "yarn hardhat coverage  --testfiles \"test/*.js\""
+        "coverage": "yarn hardhat coverage  --testfiles \"test/*.ts\""
     }
 }

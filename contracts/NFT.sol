@@ -9,15 +9,25 @@ abstract contract NFT is ERC721 {
     using SafeMath for uint256;
     using Counters for Counters.Counter;
 
+    ///@dev tokenId counter (initial tokenId is 0, incrimented by one)
     Counters.Counter private _tokenIdTracker;
+
+    mapping(uint256 => uint256) public stakedBlockNumber;
 
     constructor(string memory _name, string memory _symbol) ERC721(_name, _symbol) {
         _setBaseURI('');
     }
 
     function _safeMint(address to, bytes memory data) internal virtual {
-        super._safeMint(to, _tokenIdTracker.current(), data);
+        uint256 currentId = _tokenIdTracker.current();
+        super._safeMint(to, currentId, data);
+        stakedBlockNumber[currentId] = block.number;
         _tokenIdTracker.increment();
+    }
+
+    function _burn(uint256 tokenId) internal virtual override {
+        super._burn(tokenId);
+        delete stakedBlockNumber[tokenId];
     }
 
     function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {
