@@ -10,6 +10,7 @@ abstract contract NFT is ERC721 {
     using Counters for Counters.Counter;
 
     ///@dev tokenId counter (initial tokenId is 0, incrimented by one)
+    ///@dev tokens can be burned (destroyed), so we need a separate counter.
     Counters.Counter private _tokenIdTracker;
 
     mapping(uint256 => uint256) public stakedBlockNumber;
