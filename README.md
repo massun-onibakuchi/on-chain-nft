@@ -15,16 +15,16 @@ Lido is a decentralized infrastructure for issuing stETH tokens that you can use
  - Depositing some FT (such as wstETH) mints a NFT, which automatically generates unique image in SVG format.
  - NFT represents a liquidity in stETH pool, or a owner of FT.
  - NFT is transferable.
+  
+[Lido Finance](https://lido.fi)
+
+[Lido Finance Doc](https://docs.lido.fi/)
+
+[Lido Finance Github](https://github.com/lidofinance/lido-dao)
 
 Sample Image
 
-![Sample NFT image](images/sample-nft-image.svg)
-
-[Lido Finance](https://lido.fi)
-
-[Lido Doc](https://docs.lido.fi/)
-
-[Lido Github](https://github.com/lidofinance/lido-dao)
+<img src="images/sample-nft-image.svg" alt="Sample NFT image" width="33%" height="33%"><img src="images/sample-nft-image2.svg" alt="Sample NFT image" width="33%" height="33%"><img src="images/sample-nft-image3.svg" alt="Sample NFT image" width="33%" height="33%"><img src="images/sample-nft-image7.svg" alt="Sample NFT image" width="33%" height="33%"><img src="images/sample-nft-image4.svg" alt="Sample NFT image" width="33%" height="33%"><img src="images/sample-nft-image5.svg" alt="Sample NFT image" width="33%" height="33%">
 
 ## Setup
 To install dependencies,run  

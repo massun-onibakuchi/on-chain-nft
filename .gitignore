@@ -4,5 +4,5 @@ artifacts
 typechain
 .env
 figures
-images
-! images/sample-nft-image.svg
+images/*
+!images/sample-nft-image[0-9].svg

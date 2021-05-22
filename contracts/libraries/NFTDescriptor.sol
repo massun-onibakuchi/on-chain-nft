@@ -2,12 +2,12 @@
 pragma solidity ^0.7.6;
 pragma abicoder v2;
 
-import "@openzeppelin/contracts/utils/Strings.sol";
-import "@openzeppelin/contracts/math/SafeMath.sol";
-import "@openzeppelin/contracts/math/SignedSafeMath.sol";
-import "base64-sol/base64.sol";
-import "./HexStrings.sol";
-import "./NFTSVG.sol";
+import '@openzeppelin/contracts/utils/Strings.sol';
+import '@openzeppelin/contracts/math/SafeMath.sol';
+import '@openzeppelin/contracts/math/SignedSafeMath.sol';
+import 'base64-sol/base64.sol';
+import './HexStrings.sol';
+import './NFTSVG.sol';
 
 library NFTDescriptor {
     using Strings for uint256;
@@ -26,14 +26,14 @@ library NFTDescriptor {
     }
 
     function constructTokenURI(URIParams memory params) public pure returns (string memory) {
-        string memory name = string(abi.encodePacked(params.uTokenSymbol, "-NFT"));
+        string memory name = string(abi.encodePacked(params.uTokenSymbol, '-NFT'));
         string memory description = generateDescription();
         string memory image = Base64.encode(bytes(generateSVGImage(params)));
 
         return
             string(
                 abi.encodePacked(
-                    "data:application/json;base64,",
+                    'data:application/json;base64,',
                     Base64.encode(
                         bytes(
                             abi.encodePacked(
@@ -42,7 +42,7 @@ library NFTDescriptor {
                                 '", "description":"',
                                 description,
                                 '", "image": "',
-                                "data:image/svg+xml;base64,",
+                                'data:image/svg+xml;base64,',
                                 image,
                                 '"}'
                             )
@@ -65,7 +65,7 @@ library NFTDescriptor {
             uint256 index;
             for (uint8 i = 0; i < symbolBytes.length; i++) {
                 if (symbolBytes[i] == '"') {
-                    escapedBytes[index++] = "\\";
+                    escapedBytes[index++] = '\\';
                 }
                 escapedBytes[index++] = symbolBytes[i];
             }
@@ -78,16 +78,16 @@ library NFTDescriptor {
         return (uint256(addr)).toHexString(20);
     }
 
-    function tokenToColorHex(uint256 token, uint256 offset) internal pure returns (string memory str) {
-        return string((token >> offset).toHexStringNoPrefix(3));
+    function toColorHex(uint256 base, uint256 offset) internal pure returns (string memory str) {
+        return string((base >> offset).toHexStringNoPrefix(3));
     }
 
     function generateDescription() private pure returns (string memory) {
         return
             string(
                 abi.encodePacked(
-                    "This NFT represents a liquidity in stETH pool ",
-                    "The owner of this NFT can remove the liquidity.\\n"
+                    'This NFT represents a liquidity in stETH pool ',
+                    'The owner of this NFT can remove the liquidity.\\n'
                 )
             );
     }
@@ -100,8 +100,8 @@ library NFTDescriptor {
                 stakeAmount: params.stakeAmount,
                 uToken: addressToString(params.uTokenAddress),
                 uTokenSymbol: params.uTokenSymbol,
-                color0: tokenToColorHex(uint256(params.uTokenAddress), 136),
-                color1: tokenToColorHex(uint256(params.uTokenAddress), 0)
+                color0: toColorHex(uint256(keccak256(abi.encodePacked(params.uTokenAddress, params.tokenId))), 136),
+                color1: toColorHex(uint256(keccak256(abi.encodePacked(params.uTokenAddress, params.tokenId))), 0)
             });
 
         return NFTSVG.generateSVG(svgParams);
