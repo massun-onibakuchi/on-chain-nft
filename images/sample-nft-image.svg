@@ -13,7 +13,7 @@
 </defs>
 <rect id="r" x="0" y="0" rx="15" ry="15" width="512" height="512" fill="url(#g1)" />
 <g fill="black" font-family="Verdana" font-size="17">
-<text x="15" y="60" >stETH
+<text x="15" y="60" >wstETH
 </text>
 <text x="15" y="90">Block: #12345
 </text>

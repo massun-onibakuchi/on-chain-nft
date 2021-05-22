@@ -16,6 +16,7 @@ contract NFTManager is NFT, INFTManager, ReentrancyGuard {
     using SafeMath for uint256;
     using SafeERC20 for IERC20;
 
+    ///@dev staked underlying token amount
     uint256 public constant STAKE_AMOUNT = 1e18;
 
     ///@dev ref to underlying token (deposited token)

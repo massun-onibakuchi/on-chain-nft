@@ -9,12 +9,16 @@
    -  Any user can mint a NFT in turn depositing a certain amount of ERC20 token.
 
 ### Sample NFT image
- - Depositing some FT (such as stETH) mints a NFT, which automatically generates unique image in SVG format.
+ - Depositing some FT (such as wstETH) mints a NFT, which automatically generates unique image in SVG format.
  - NFT represents a liquidity in stETH pool, or a owner of FT.
  - Burning a NFT returns the deposited stETH.
  - NFT is transferable.
 
 ![Sample NFT image](images/sample-nft-image.svg)
+
+[Lido Finance](https://lido.fi)
+[Lido Doc](https://docs.lido.fi/)
+[Lido Github](https://github.com/lidofinance/lido-dao)
 
 ## Setup
 To install dependencies,run  
