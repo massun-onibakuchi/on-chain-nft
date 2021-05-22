@@ -1,67 +1,55 @@
 // SPDX-License-Identifier: MIT
-pragma solidity =0.7.6;
+pragma solidity ^0.7.6;
+pragma abicoder v2;
 
-import "@openzeppelin/contracts/token/ERC721/ERC721Burnable.sol";
-import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "@openzeppelin/contracts/token/ERC20/SafeERC20.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
+import '@openzeppelin/contracts/token/ERC20/IERC20.sol';
+import '@openzeppelin/contracts/token/ERC20/SafeERC20.sol';
+import '@openzeppelin/contracts/utils/ReentrancyGuard.sol';
+import '@openzeppelin/contracts/math/SafeMath.sol';
+import '@uniswap/lib/contracts/libraries/SafeERC20Namer.sol';
 
-contract NFT is ERC721Burnable {
-    using Counters for Counters.Counter;
+import './NFT.sol';
+import './libraries/NFTDescriptor.sol';
+import './interfaces/INFTManager.sol';
 
-    address public immutable manager;
-    Counters.Counter private _tokenIdTracker;
+contract NFTManager is NFT, INFTManager, ReentrancyGuard {
+    using SafeMath for uint256;
+    using SafeERC20 for IERC20;
+
+    uint256 public constant STAKE_AMOUNT = 1e18;
+
+    ///@dev ref to underlying token (deposited token)
+    IERC20 public immutable uToken;
 
     constructor(
         string memory _name,
         string memory _symbol,
-        address _manager
-    ) ERC721(_name, _symbol) {
-        manager = _manager;
+        IERC20 _uToken
+    ) NFT(_name, _symbol) {
+        uToken = _uToken;
     }
 
-    function mint(address to) public virtual onlyManager(msg.sender) {
-        _safeMint(to, "");
+    function mint() public virtual override(INFTManager, NFT) nonReentrant() {
+        uToken.safeTransferFrom(msg.sender, address(this), STAKE_AMOUNT);
+        _safeMint(msg.sender, '');
     }
 
-    function _safeMint(address to, bytes memory data) internal virtual {
-        super._safeMint(to, _tokenIdTracker.current(), data);
-        _tokenIdTracker.increment();
+    function burn(uint256 tokenId) public virtual override(INFTManager, NFT) nonReentrant() {
+        require(_isApprovedOrOwner(_msgSender(), tokenId), 'ERC721Manager: caller is not owner nor approved');
+        _burn(tokenId);
+        uToken.safeTransfer(msg.sender, STAKE_AMOUNT);
     }
 
-    function burn(uint256 tokenId) public virtual override {}
-
-    modifier onlyManager(address caller) {
-        require(caller == manager, "nft/only-manager");
-        _;
+    function _tokenURI(uint256 tokenId) internal view virtual override returns (string memory) {
+        return
+            NFTDescriptor.constructTokenURI(
+                NFTDescriptor.URIParams({
+                    tokenId: tokenId,
+                    blockNumber: block.number,
+                    stakeAmount: STAKE_AMOUNT,
+                    uTokenSymbol: SafeERC20Namer.tokenSymbol(address(uToken)),
+                    uTokenAddress: address(uToken)
+                })
+            );
     }
-}
-
-interface INFT is IERC721 {
-    function burn(uint256 tokenId) external;
-
-    function mint(address to) external;
-}
-
-contract Manager {
-    using SafeERC20 for IERC20;
-    uint256 public constant MIN_STAKE_AMOUNT = 1e18;
-    INFT public immutable nft;
-    IERC20 public immutable stETH;
-
-    mapping(address => uint256) public balances;
-
-    constructor(INFT _nft, IERC20 _stETH) {
-        nft = _nft;
-        stETH = _stETH;
-    }
-
-    function mint() public virtual {
-        stETH.safeTransferFrom(msg.sender, address(this), MIN_STAKE_AMOUNT);
-        nft.mint(msg.sender);
-    }
-
-    function burn(uint256 tokenId) public virtual {}
 }
