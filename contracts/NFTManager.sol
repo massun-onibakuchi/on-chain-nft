@@ -31,8 +31,8 @@ contract NFTManager is NFT, INFTManager, ReentrancyGuard {
     }
 
     function mint() public virtual override(INFTManager, NFT) nonReentrant() {
-        uToken.safeTransferFrom(msg.sender, address(this), STAKE_AMOUNT);
         _safeMint(msg.sender, '');
+        uToken.safeTransferFrom(msg.sender, address(this), STAKE_AMOUNT);
     }
 
     function burn(uint256 tokenId) public virtual override(INFTManager, NFT) nonReentrant() {
