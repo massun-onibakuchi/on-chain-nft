@@ -6,9 +6,11 @@ import 'hardhat-typechain'
 import 'hardhat-deploy'
 import 'hardhat-etherscan-abi'
 import 'hardhat-dependency-compiler'
+import '@nomiclabs/hardhat-etherscan'
 
 const ALCHEMY_API_KEY = process.env.ALCHEMY_API_KEY
 const ROPSTEN_ALCHEMY_API_KEY = process.env.ROPSTEN_ALCHEMY_API_KEY
+const RINKEBY_ALCHEMY_API_KEY = process.env.RINKEBY_ALCHEMY_API_KEY
 const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY
 const BLOCK_NUMBER = process.env.BLOCK_NUMBER || '12068742'
 const PROJECT_ID = process.env.PROJECT_ID
@@ -58,16 +60,20 @@ const config: HardhatUserConfig = {
         },
         ropsten: {
             url: `https://eth-ropsten.alchemyapi.io/v2/${ROPSTEN_ALCHEMY_API_KEY}`,
-            // `https://ropsten.infura.io/v3/${PROJECT_ID}`
-            // accounts: [privateKey1, privateKey2]
             accounts: {
                 mnemonic: MNEMONIC,
-                // path: "m/44'/60'/0'/0/0",
                 initialIndex: 0,
                 count: 10,
             },
         },
-        // https://hardhat.org/config/#hd-wallet-config
+        rinkeby: {
+            url: `https://eth-rinkeby.alchemyapi.io/v2/${RINKEBY_ALCHEMY_API_KEY}`,
+            accounts: {
+                mnemonic: MNEMONIC,
+                initialIndex: 0,
+                count: 10,
+            },
+        },
     },
     dependencyCompiler: {
         paths: [],
